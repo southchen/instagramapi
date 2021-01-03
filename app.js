@@ -63,23 +63,26 @@ const callbackPics = () => {
 };
 
 const getAccessToken = (code) => {
-  let formData = new FormData();
-  formData.append('code', code);
+  var myHeaders = new Headers();
+  myHeaders.append(
+    'Cookie',
+    'ig_did=5779B500-2FBE-4B5B-8E5D-E60CB81154EF; ig_nrcb=1; csrftoken=0MFPTzJlWdcuvyCKkLEqu1Gi0J7KioiX; mid=X_EdeAAEAAFfexOcxpPoxhsGDqqk'
+  );
+  var formdata = new FormData();
+  formdata.append('client_id', CLIENT_ID);
+  formdata.append('client_secret', CLIENT_SECRET);
+  formdata.append('grant_type', 'authorization_code');
+  formdata.append('redirect_uri', 'https://southchen.github.io/instagramapi/');
+  formdata.append('code', code);
 
-  return fetch('https://api.instagram.com/oauth/access_token', {
+  var requestOptions = {
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      code: code,
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      grant_type: 'authorization_code',
-      redirect_url: DOMAIN,
-    }),
-  })
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow',
+  };
+
+  return fetch('https://api.instagram.com/oauth/access_token', requestOptions)
     .then((response) => {
       console.log(response);
       response.json();
