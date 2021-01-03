@@ -65,26 +65,36 @@ const callbackPics = () => {
 const getAccessToken = (code) => {
   let formData = new FormData();
   formData.append('code', code);
-  return fetch('/api/access_token', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  console.log(formData);
+  console.log(
+    JSON.stringify({
       code: code,
       clientId: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
       grantType: 'authorization_code',
       redirectUrl: DOMAIN,
-    }),
-  })
-    .then((response) => response.json())
-    .then(({ status, data }) => {
-      ACCESS_TOKEN = data.token.access_token;
-      renderView('loading', callbackPics);
     })
-    .catch(displayError);
+  );
+  //   return fetch('/api/access_token', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       code: code,
+  //       clientId: CLIENT_ID,
+  //       clientSecret: CLIENT_SECRET,
+  //       grantType: 'authorization_code',
+  //       redirectUrl: DOMAIN,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then(({ status, data }) => {
+  //       ACCESS_TOKEN = data.token.access_token;
+  //       renderView('loading', callbackPics);
+  //     })
+  //     .catch(displayError);
 };
 
 const fetchMedia = () => {
