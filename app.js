@@ -24,7 +24,8 @@ const GRAPH_API_BASE = 'https://graph.instagram.com/';
 const LOGIN_URL = `${API_BASE}oauth/authorize/?client_id=${API_CLIENT_ID}&redirect_uri=${DOMAIN}&response_type=code&scope=user_profile,user_media`;
 const ACCESS_TOEKN_URL = `${API_BASE}oauth/access_token`;
 var ACCESS_TOKEN = '';
-
+const CLIENT_ID = '971107313427781';
+const CLIENT_SECRET = '108b7b79451a08421c199ffbe80b9980';
 // Set the initial view and render the app
 window.onload = () => {
   if (HASH[0] === 'code') {
@@ -70,7 +71,13 @@ const getAccessToken = (code) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ code: code }),
+    body: JSON.stringify({
+      code: code,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
+      grantType: 'authorization_code',
+      redirectUrl: DOMAIN,
+    }),
   })
     .then((response) => response.json())
     .then(({ status, data }) => {
