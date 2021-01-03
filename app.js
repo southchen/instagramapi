@@ -65,36 +65,30 @@ const callbackPics = () => {
 const getAccessToken = (code) => {
   let formData = new FormData();
   formData.append('code', code);
-  console.log(formData);
-  console.log(
-    JSON.stringify({
+
+  return fetch('https://api.instagram.com/oauth/access_token', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       code: code,
-      clientId: CLIENT_ID,
-      clientSecret: CLIENT_SECRET,
-      grantType: 'authorization_code',
-      redirectUrl: DOMAIN,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      grant_type: 'authorization_code',
+      redirect_url: DOMAIN,
+    }),
+  })
+    .then((response) => {
+      console.log(response);
+      response.json();
     })
-  );
-  //   return fetch('/api/access_token', {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       code: code,
-  //       clientId: CLIENT_ID,
-  //       clientSecret: CLIENT_SECRET,
-  //       grantType: 'authorization_code',
-  //       redirectUrl: DOMAIN,
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then(({ status, data }) => {
-  //       ACCESS_TOKEN = data.token.access_token;
-  //       renderView('loading', callbackPics);
-  //     })
-  //     .catch(displayError);
+    .then(({ status, data }) => {
+      ACCESS_TOKEN = data.token.access_token;
+      renderView('loading', callbackPics);
+    })
+    .catch(displayError);
 };
 
 const fetchMedia = () => {
